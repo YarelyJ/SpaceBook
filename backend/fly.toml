@@ -12,27 +12,28 @@ primary_region = "mia"      # Miami es la región más cercana a México; tambi�
   strategy = "immediate"
 
 [[services]]
+  internal_port = 80        # ← Apache escucha en 80
   protocol = "tcp"
-  internal_port = 80
 
   [[services.ports]]
     port = 80
     handlers = ["http"]
-    force_https = true
 
   [[services.ports]]
     port = 443
     handlers = ["tls", "http"]
 
+  [[services.http_checks]]
+    interval = "10s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/"
+
   [services.concurrency]
     type = "connections"
     hard_limit = 25
     soft_limit = 20
-
-  [[services.tcp_checks]]
-    interval = "15s"
-    timeout = "2s"
-    grace_period = "5s"
 
 [[vm]]
   memory = "256mb"
