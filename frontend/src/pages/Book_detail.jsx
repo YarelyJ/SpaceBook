@@ -28,6 +28,7 @@ export default function BookDetail({ book, category, onBack, onBuy, onAddToCart 
   ]
 
   return (
+    console.log('BOOK DETAIL', book),
     <div className="mx-auto max-w-4xl px-4 py-8">
       <button
         onClick={onBack}
