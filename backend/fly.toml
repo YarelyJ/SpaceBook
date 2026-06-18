@@ -1,0 +1,40 @@
+# fly.toml — Configuración de despliegue del BACKEND (PHP) en Fly.io
+# Coloca este archivo en la raíz de la carpeta backend/ antes de hacer deploy.
+
+app = "spacebook-backend"   # <-- Cambia esto por el nombre que elijas en fly.io
+primary_region = "mia"      # Miami es la región más cercana a México; también puedes usar "dfw" (Dallas)
+
+[build]
+  # Usa la imagen oficial de PHP con Apache incluido
+  image = "php:8.2-apache"
+
+[deploy]
+  strategy = "immediate"
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 80
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
+
+  [[services.tcp_checks]]
+    interval = "15s"
+    timeout = "2s"
+    grace_period = "5s"
+
+[[vm]]
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1
